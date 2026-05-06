@@ -2,7 +2,9 @@
 <%
   _partial_path = File.expand_path('partials/gpu_discovery.erb', __dir__)
   ERB.new(File.read(_partial_path)).result(binding)
-  _ansys_versions = `module -t avail ansys 2>&1`.scan(/^ansys\/(\S+)/).flatten.uniq.sort.reverse
+  _ansys_versions_cmd = "bash -lc 'source /etc/profile.d/lmod.sh >/dev/null 2>&1; module -t avail ansys 2>&1'"
+  _ansys_versions = `#{_ansys_versions_cmd}`.scan(/^ansys\/(\S+)/).flatten.uniq.sort.reverse
+  _ansys_versions = ["2025R2"] if _ansys_versions.empty?
 %>
 
 cluster: "pax"
@@ -19,7 +21,7 @@ attributes:
   version:
     widget: "select"
     label: "Ansys version"
-    help: "Auto-detected from `module avail ansys`."
+    help: "Auto-detected from `module avail ansys`, with a fallback to 2025R2 if discovery is unavailable."
     options:
 <% _ansys_versions.each do |v| %>
       - ["<%= v %>", "<%= v %>"]
