@@ -1,0 +1,12 @@
+---
+name: Ansys
+category: Interactive Apps
+subcategory: Apps
+role: batch_connect
+description: |
+  This app will launch an [ANSYS Workbench] on[Tufts HPC] using a **shared
+  node**. 
+
+  [ANSYS Workbench]: https://www.ansys.com/
+  [Tufts HPC]: https://it.tufts.edu/high-performance-computing
+

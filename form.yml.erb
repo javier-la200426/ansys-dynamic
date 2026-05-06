@@ -1,0 +1,20 @@
+---
+cluster: "pax"
+form:
+  - bc_num_hours
+  - num_cores
+  - num_memory
+  - partition
+  - version
+
+attributes:
+<%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/cpu_partition.yml").indent(2) %>
+<%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/num_cores_generic.yml").indent(2) %>
+<%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/num_memory_generic.yml").indent(2) %>
+
+  version:
+    widget: "select"
+    label: "Version"
+    help: "Select the desired version."
+    options:
+      - ["2025R2", "2025R2"]     
