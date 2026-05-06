@@ -1,4 +1,17 @@
-# What I Learned May 6th
+# Ansys OnDemand: The Permissions Trap (and a Lookalike Session-Teardown Bug)
+
+## What this file is and why it matters
+
+This note documents the **first** class of Ansys OnDemand failures we hit on May 6 — failures that *looked* like noVNC / Slurm / app-config bugs but were actually caused by **filesystem permissions on the Ansys install tree**. It also documents a second behavior that *looked* like a reconnect bug but was actually expected session teardown.
+
+Read this if you see:
+- `runwb2: command not found` in `output.log` even after `module load ansys/<version>` succeeds
+- `Failed to connect to server` from noVNC right after the job starts
+- A session that worked, then refused to reconnect after you closed Workbench
+
+The common trap in all three cases is the same: the visible symptom is downstream of the real cause. `PATH` can be correct and still point at directories your account cannot traverse. noVNC can fail because the backend session has already cleaned itself up by design.
+
+For the *separate* problem of Workbench failing inside a CPU-only Slurm allocation (the SceneGraphChart addin error), see `MAY6_ANSYS_DEBUG_SUMMARY.md` — that one led to the GPU-only refactor and is unrelated to permissions.
 
 ## Summary
 This debugging session uncovered two separate Ansys Open OnDemand behaviors:
