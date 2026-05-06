@@ -1,5 +1,6 @@
 ---
 <%
+  @partition_filter = :gpu
   _partial_path = File.expand_path('partials/gpu_discovery.erb', __dir__)
   ERB.new(File.read(_partial_path)).result(binding)
   _ansys_versions_cmd = "bash -lc 'source /etc/profile.d/lmod.sh >/dev/null 2>&1; module -t avail ansys 2>&1'"
