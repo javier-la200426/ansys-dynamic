@@ -1,20 +1,34 @@
 ---
+<%
+  _partial_path = File.expand_path('partials/gpu_discovery.erb', __dir__)
+  ERB.new(File.read(_partial_path)).result(binding)
+  _ansys_versions = `module -t avail ansys 2>&1`.scan(/^ansys\/(\S+)/).flatten.uniq.sort.reverse
+%>
+
 cluster: "pax"
-form:
-  - bc_num_hours
-  - num_cores
-  - num_memory
-  - partition
-  - version
+
+bc_dynamic_js: true
 
 attributes:
-<%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/cpu_partition.yml").indent(2) %>
-<%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/num_cores_generic.yml").indent(2) %>
-<%= File.read("/etc/ood/config/apps/dashboard/batch_connect/partials/num_memory_generic.yml").indent(2) %>
+<%= generate_partition_field.indent(2) %>
+<%= generate_num_hours_field.indent(2) %>
+<%= generate_gpu_type_field.indent(2) %>
+<%= generate_num_cores_field.indent(2) %>
+<%= generate_num_memory_field.indent(2) %>
 
   version:
     widget: "select"
-    label: "Version"
-    help: "Select the desired version."
+    label: "Ansys version"
+    help: "Auto-detected from `module avail ansys`."
     options:
-      - ["2025R2", "2025R2"]     
+<% _ansys_versions.each do |v| %>
+      - ["<%= v %>", "<%= v %>"]
+<% end %>
+
+form:
+  - partition
+  - bc_num_hours
+  - gpu_type
+  - num_cores
+  - num_memory
+  - version
